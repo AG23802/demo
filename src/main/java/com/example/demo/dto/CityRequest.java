@@ -1,4 +1,4 @@
-package com.example.demo.Pojos;
+package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

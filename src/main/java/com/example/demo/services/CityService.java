@@ -1,8 +1,8 @@
 package com.example.demo.services;
 
-import com.example.demo.Pojos.CityRequest;
+import com.example.demo.dto.CityRequest;
 import com.example.demo.entities.City;
-import com.example.demo.entities.CityResponse;
+import com.example.demo.dto.CityResponse;
 import com.example.demo.entities.Country;
 import com.example.demo.repositories.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

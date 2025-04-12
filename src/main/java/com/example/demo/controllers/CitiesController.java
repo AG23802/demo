@@ -1,10 +1,9 @@
 package com.example.demo.controllers;
 
-import com.example.demo.Pojos.CityRequest;
+import com.example.demo.dto.CityRequest;
 import com.example.demo.entities.City;
-import com.example.demo.entities.CityResponse;
+import com.example.demo.dto.CityResponse;
 import com.example.demo.exceptions.ErrorResponse;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;

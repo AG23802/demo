@@ -1,4 +1,6 @@
-package com.example.demo.entities;
+package com.example.demo.dto;
+
+import com.example.demo.entities.City;
 
 public class CityResponse {
     private String name;
