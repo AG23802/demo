@@ -28,15 +28,19 @@ public class CityService {
         return cityRepository.findAll(Sort.by(Sort.Order.asc("id")));
     }
 
-    public City saveCity(City city) {
-        return cityRepository.save(city);
+    public List<City> findCities(int countryId, Long population) {
+        return cityRepository.findByCountryIdAndPopulationLessThan(countryId, population);
     }
 
     public City getCity(String cityCode) {
         return cityRepository.findByCode(cityCode);
     }
 
-    public CityResponse addCity(CityRequest cityRequest) {
+    public List<City> getCityByCode(String cityCode) {
+        return cityRepository.getByCode(cityCode);
+    }
+
+    public CityResponse saveCity(CityRequest cityRequest) {
         Country country = countryRepository.findById(cityRequest.countryId);
 
         City city = new City();
@@ -44,10 +48,15 @@ public class CityService {
         city.setCode(cityRequest.code);
         city.setCountryId(country.getId());
 
+        System.out.println("Before @Valid");
         City savedCity = cityRepository.save(city);
 
         CityResponse response = new CityResponse(savedCity);
         response.setCountry(country.getName());
         return response;
+    }
+
+    public int getCount() {
+        return cityRepository.getCountProcedure();
     }
 }

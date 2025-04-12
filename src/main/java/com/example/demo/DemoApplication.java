@@ -8,8 +8,5 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-//		ApplicationContext context = SpringApplication.run(DemoApplication.class, args);
-//		var orderService = context.getBean(OrderService.class);
-//		orderService.placeOrder();
 	}
 }

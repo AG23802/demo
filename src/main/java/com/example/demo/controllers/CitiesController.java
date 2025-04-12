@@ -4,15 +4,20 @@ import com.example.demo.Pojos.CityRequest;
 import com.example.demo.entities.City;
 import com.example.demo.entities.CityResponse;
 import com.example.demo.exceptions.ErrorResponse;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.services.CityService;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/api")
 public class CitiesController {
     @Autowired
@@ -24,13 +29,20 @@ public class CitiesController {
     }
 
     @PostMapping("/saveCity")
-    public City saveCity(@RequestBody City city) {
-        return cityService.saveCity(city);
+    public CityResponse saveCity(@Valid @RequestBody CityRequest cityRequest) {
+
+        System.out.println("After @Valid");
+        return cityService.saveCity(cityRequest);
     }
 
-    @PostMapping("/addCity")
-    public CityResponse addCity(@RequestBody CityRequest cityRequest) {
-        return cityService.addCity(cityRequest);
+    @RequestMapping("/find")
+    public List<City> findCities(@RequestParam int countryId, @RequestParam Long population) {
+        return cityService.findCities(countryId, population);
+    }
+
+    @RequestMapping("/findCityByCode")
+    public List<City> getCityByCode(@RequestParam @Pattern(regexp = "^[A-Z]{1,2}$", message = "Code must be 1 or 2 uppercase letters") String code) {
+        return cityService.getCityByCode(code);
     }
 
     @RequestMapping("/getCity/{cityCode}")
@@ -44,6 +56,11 @@ public class CitiesController {
         }
 
         return ResponseEntity.ok(city);  // Return 200 OK with the city data
+    }
+
+    @RequestMapping("/getCount")
+    public int getCount() {
+        return cityService.getCount();
     }
 
 //    public City getCity(@PathVariable String cityCode) {
@@ -60,3 +77,4 @@ public class CitiesController {
 //
 //    }
 }
+
