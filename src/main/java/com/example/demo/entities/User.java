@@ -13,10 +13,6 @@ public class User {
 
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_role_id")
-    private Role role;
-
     public int getId() {
         return id;
     }
@@ -39,13 +35,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }

@@ -1,65 +1,42 @@
 package com.example.demo.config;
 
-import com.example.demo.services.user.UserService;
+import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.*;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
-    UserService userService;
+    private JwtAuthenticationFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/home").permitAll() // Allow /home without authentication
-                        .requestMatchers(HttpMethod.POST, "/addUser").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/addRole").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN") // Allow /home without authentication
-                        .anyRequest().authenticated() // All other requests require authentication
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/protected/**").authenticated()  // Protect the /protected endpoints
+                        .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults()); // Enable default login form
-
-        return http.build();
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
-//    @Bean
-//    public UserDetailsService users() {
-//        return new InMemoryUserDetailsManager(
-//                User.withUsername("admin")
-//                        .password(passwordEncoder().encode("admin123"))
-//                        .roles("ADMIN")
-//                        .build(),
-//                User.withUsername("user")
-//                        .password(passwordEncoder().encode("user123"))
-//                        .roles("USER")
-//                        .build()
-//        );
-//    }
-
-    // Add this to your configuration to register it with the AuthenticationManager:
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userService); // Custom service to load user details from the database
-        authenticationProvider.setPasswordEncoder(passwordEncoder());  // Password encoder (for hashed passwords)
-        return authenticationProvider;
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
     }
 
     @Bean

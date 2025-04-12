@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Role;
 import com.example.demo.entities.User;
-import com.example.demo.services.user.RoleService;
 import com.example.demo.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
     @Autowired
-    RoleService roleService;
-
-    @Autowired
     UserService userService;
 
     @RequestMapping("/home")
@@ -27,11 +22,6 @@ public class HomeController {
     @RequestMapping("/admin")
     public String adminHome() {
         return "Hello Admin!";
-    }
-
-    @PostMapping( "/addRole")
-    public Role addRole(@RequestBody Role role) {
-        return roleService.addRole(role);
     }
 
     @PostMapping( "/addUser")
