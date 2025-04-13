@@ -42,14 +42,12 @@ public class CityService {
 
     public CityResponse saveCity(CityRequest cityRequest) {
         Country country = countryRepository.findById(cityRequest.countryId);
-        System.out.println(cityRequest.countryId);
 
         City city = new City();
         city.setName(cityRequest.name);
         city.setCode(cityRequest.code);
         city.setCountryId(country.getId());
 
-        System.out.println("Before @Valid");
         City savedCity = cityRepository.save(city);
 
         CityResponse response = new CityResponse(savedCity);

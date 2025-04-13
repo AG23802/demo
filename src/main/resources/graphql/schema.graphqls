@@ -18,13 +18,13 @@ input CityRequest {
     countryId: Int!
 }
 
-#type Mutation {
-#    createCity(cityRequest: CityRequest!): City
-#}
-
 type Mutation {
-    createCity(name: String!, code: String!, countryId: Int!): City
+    createCity(cityRequest: CityRequest!): City
 }
+
+#type Mutation {
+#    createCity(name: String!, code: String!, countryId: Int!): City
+#}
 
 type Query {
     cities: [City]

@@ -33,18 +33,7 @@ public class GraphQLController {
     }
 
     @MutationMapping
-    public CityResponse createCity(@Argument String name, @Argument String code, @Argument int countryId) {
-        System.out.println("Received Name: " + name);
-        System.out.println("Received Code: " + code);
-        System.out.println("Received CountryId: " + countryId);
-
-        CityRequest cityRequest = new CityRequest();
-        cityRequest.name = name ;
-        cityRequest.code = code ;
-        cityRequest.countryId = countryId;
-
-        CityResponse res = cityService.saveCity(cityRequest);
-        System.out.println("Saved City: " + res);
-        return res;
+    public CityResponse createCity(@Argument CityRequest cityRequest) {
+        return cityService.saveCity(cityRequest);
     }
 }
