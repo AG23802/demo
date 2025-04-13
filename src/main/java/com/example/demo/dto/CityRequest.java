@@ -15,4 +15,10 @@ public class CityRequest {
 
     @NotNull(message = "Country Id cannot be null.")
     public int countryId;
+
+    // Custom toString method for better debugging
+    @Override
+    public String toString() {
+        return "CityRequest{name='" + name + "', code='" + code + "', countryId=" + countryId + "}";
+    }
 }

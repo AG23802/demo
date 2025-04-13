@@ -42,6 +42,7 @@ public class CityService {
 
     public CityResponse saveCity(CityRequest cityRequest) {
         Country country = countryRepository.findById(cityRequest.countryId);
+        System.out.println(cityRequest.countryId);
 
         City city = new City();
         city.setName(cityRequest.name);

@@ -1,4 +1,8 @@
 spring:
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
   datasource:
     url: jdbc:postgresql://ep-divine-grass-a2mcujmz-pooler.eu-central-1.aws.neon.tech/neondb
     username: neondb_owner
@@ -15,3 +19,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
   application:
     name: demo
+
+# application.properties
+jwt:
+  secretKey: fpt4Tk13JY0UmMGrHzF+NJX5LBkzkl9hKYzOl9XOs2A=

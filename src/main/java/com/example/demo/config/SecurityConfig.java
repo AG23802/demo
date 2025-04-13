@@ -15,21 +15,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-
+//    Spring Security configuration class — defines what’s protected, what’s public, and how security works in your app.
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
+
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/auth/login",      // Example of a public login endpoint
+            "/graphql",         // Example of a public GraphQL endpoint
+            "/graphiql"         // Example of a public GraphiQL UI
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)  // Disable CSRF for stateless authentication
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Stateless session management
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/protected/**").authenticated()  // Protect the /protected endpoints
-                        .anyRequest().authenticated()
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()  // Explicitly permit public endpoints
+                        .anyRequest().authenticated()  // Allow any other requests (not matched above) to be public
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)  // JWT filter
                 .build();
     }
 

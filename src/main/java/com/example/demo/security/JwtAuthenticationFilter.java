@@ -15,6 +15,15 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends GenericFilter {
 
+    /**
+     * A custom filter that intercepts every HTTP request and checks if the JWT token is valid.
+     * Responsibilities:
+     *  •	Intercept requests before they hit your controllers.
+     * 	•	Look for Authorization: Bearer <token> headers.
+     *  •	Validate the token using JwtUtil.
+     * 	•	If valid, set the authenticated user in the Spring Security context.
+     */
+
     @Autowired
     JwtUtil jwtUtil;
 
