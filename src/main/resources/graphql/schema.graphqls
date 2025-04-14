@@ -20,11 +20,15 @@ input CityRequest {
 
 type Mutation {
     createCity(cityRequest: CityRequest!): City
+    login(username: String!, password: String!): TokenResponse!
 }
 
 #type Mutation {
 #    createCity(name: String!, code: String!, countryId: Int!): City
 #}
+type TokenResponse {
+    token: String!
+}
 
 type Query {
     cities: [City]

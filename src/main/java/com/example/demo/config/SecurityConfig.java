@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -19,7 +20,11 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
 
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
+
     private static final String[] PUBLIC_ENDPOINTS = {
+            "/api/**",      // Example of a public login endpoint
             "/auth/login",      // Example of a public login endpoint
             "/graphql",         // Example of a public GraphQL endpoint
             "/graphiql"         // Example of a public GraphiQL UI
@@ -34,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()  // Explicitly permit public endpoints
                         .anyRequest().authenticated()  // Allow any other requests (not matched above) to be public
                 )
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))  // Add the CORS configuration
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)  // JWT filter
                 .build();
     }

@@ -1,24 +1,33 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.graphql;
 
 import com.example.demo.dto.CityRequest;
 import com.example.demo.dto.CityResponse;
+import com.example.demo.dto.TokenResponse;
 import com.example.demo.entities.City;
-import com.example.demo.entities.Country;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.services.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class GraphQLController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private AuthenticationManager authManager;
+
+    @Autowired
+    JwtUtil jwtUtil;
 
     @QueryMapping
     public List<City> cities() {
@@ -35,5 +44,17 @@ public class GraphQLController {
     @MutationMapping
     public CityResponse createCity(@Argument CityRequest cityRequest) {
         return cityService.saveCity(cityRequest);
+    }
+
+    // Query to get a city by ID
+    @MutationMapping
+    // ony needed if method name doesnt match to schema
+    public TokenResponse login(@Argument("username") String username, @Argument("password") String password) {
+        Authentication auth = authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+        );
+
+        String token = jwtUtil.generateToken(username);
+        return new TokenResponse(token);
     }
 }
