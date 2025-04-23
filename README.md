@@ -86,9 +86,3 @@ This project covers core concepts and techniques in Spring Boot, Spring Security
 
 The goal of this project was to demonstrate my understanding of these technologies and showcase my ability to apply them to real-world scenarios. You can explore the code to see how each concept was implemented.
 
----
-
-This `README.md` file provides a concise summary of the technologies used in your project and outlines what you have learned and implemented. It can be shared with others to showcase your skills and understanding of these technologies.
-
----
-
